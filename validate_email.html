@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Email Validation</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        h1 {
+            color: #333;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .result {
+            color: #4CAF50; /* Green color for valid email */
+            font-size: 18px;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+
+        .warning {
+            color: #f44336; /* Red color for warning */
+            font-weight: bold;
+            margin-top: 20px;
+        }
+
+        input[type="text"], input[type="submit"] {
+            width: 100%;
+            margin-bottom: 20px;
+            padding: 12px;
+            border: 2px solid #4CAF50; /* Green border */
+            border-radius: 8px;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+
+        input[type="submit"] {
+            background-color: #4CAF50; /* Green submit button */
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #45a049; /* Darker green on hover */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Email Validation</h1>
+        {% if result %}
+            <div class="result">{{ result }}</div>
+        {% else %}
+            <form id="emailForm" action="/validate-email" method="post" onsubmit="return validateForm('emailForm')">
+                <label for="email">Email Address:</label><br>
+                <input type="text" id="email" name="email" pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$" placeholder="Enter email address"><br>
+                <input type="submit" value="Validate Email">
+                <div id="emailFormWarning" class="warning"></div>
+            </form>
+        {% endif %}
+    </div>
+
+    <script>
+        function validateForm(formId) {
+            var form = document.getElementById(formId);
+            var inputs = form.getElementsByTagName('input');
+            var hasEmptyField = false;
+
+            for (var i = 0; i < inputs.length; i++) {
+                if (inputs[i].value.trim() === '') {
+                    hasEmptyField = true;
+                    break;
+                }
+            }
+
+            if (hasEmptyField) {
+                var warningElement = document.getElementById(formId + 'Warning');
+                warningElement.textContent = 'Please fill in all fields.';
+                return false;
+            }
+
+            return true;
+        }
+    </script>
+</body>
+</html>
